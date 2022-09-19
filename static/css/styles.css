@@ -1,0 +1,20 @@
+
+.main_container {
+    position: relative;
+    left: 15%;
+    width: 70%;
+    padding: 10px;
+}
+
+.main_container button {
+    background: #3b3434;
+    border: none;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+}
+
+.main_container button:hover {
+    background: #5c5756;
+}
