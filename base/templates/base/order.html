@@ -1,0 +1,49 @@
+{% extends 'base/main.html' %}
+{% block content %}
+    {% if order.items.all %}
+        <script>
+            async function remove(id) {
+                var response = await fetch('/remove_from_order/'+id, {method: 'GET'});
+                document.location.reload(true);
+            };
+        </script>
+
+        {% for item in order.items.all %}
+        <div class="item_container">
+            <p>{{item.name}}</p>
+            <p>{{item.price}} RUB</p>
+            <button class="universal_button" onclick="remove({{item.id}})">Remove</button>
+        </div>
+        {% endfor %}
+        <div>
+            <button class="universal_button" id="buy-order-button">Buy all</button>
+            {% if order.discount %}
+            <p>Coupon activated</p>
+            {% else %}
+            <button class="universal_button" id="coupon-button">Activate coupon</button>
+            {% endif %}
+        </div>
+
+        <script>
+            var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+            var buyOrderButton = document.getElementById('buy-order-button');
+            buyOrderButton.addEventListener('click', async function() {
+                // Create a new Checkout Session using the server-side endpoint
+                // Redirect to Stripe Session Checkout
+                var response = await fetch('/buy_order', {method: 'GET'});
+                var response_json = await response.json();
+                session = response_json.session_id;
+                stripe.redirectToCheckout({ sessionId: session });
+            });
+
+            var couponButton = document.getElementById('coupon-button');
+            couponButton.addEventListener('click', async function() {
+                var response = await fetch('/activate_coupon', {method: 'GET'});
+                document.location.reload(true);
+            });
+        </script>
+
+    {% else %}
+        <p>Your cart is empty</p>
+    {% endif %}
+{% endblock %}

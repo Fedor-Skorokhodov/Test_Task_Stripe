@@ -1,0 +1,11 @@
+{% extends 'base/main.html' %}
+{% block content %}
+    {% for item in items %}
+        <div class="item_container">
+            <a style="text-decoration: none; color: black" href="{% url 'item-page' item.id %}">
+                <h1 style="text-align: center">{{item.name}}</h1>
+                <p>{{item.price}} RUB</p>
+            </a>
+        </div>
+    {% endfor %}
+{% endblock %}

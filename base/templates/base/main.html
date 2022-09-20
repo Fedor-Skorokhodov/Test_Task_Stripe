@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body>
+    <button class="universal_button"><a href="{% url 'home-page' %}">home</a></button>
+    <button class="universal_button"><a href="{% url 'cart-page' %}">cart</a></button>
+    <div class="main_container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

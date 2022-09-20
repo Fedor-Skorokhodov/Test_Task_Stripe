@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script src="https://js.stripe.com/v3/"></script>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-</head>
-<body>
-    <div class="main_container">
-        <h1>{{item.name}}</h1>
-        <p>{{item.description}}</p>
-        <p>{{item.price}} RUB</p>
-        <button id="buy-button">Buy</button>
-    </div>
+{% extends 'base/main.html' %}
+{% block content %}
+<h1>{{item.name}}</h1>
+<p>{{item.description}}</p>
+<p>{{item.price}} RUB</p>
+{% if added_to_cart %}
+    <p>Added to cart</p>
+{% else %}
+    <button class="universal_button" id="buy-button">Buy</button>
+    <button class="universal_button" id="add-to-cart-button">Add to cart</button>
 
     <script>
       var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
@@ -26,7 +20,12 @@
         session = response_json.session_id;
         stripe.redirectToCheckout({ sessionId: session });
       });
-    </script>
 
-</body>
-</html>
+      var addButton = document.getElementById('add-to-cart-button');
+      addButton.addEventListener('click', async function() {
+        var response = await fetch('/add_to_order/' + {{item.id}}, {method: 'GET'});
+        document.location.reload(true);
+      });
+    </script>
+{% endif %}
+{% endblock %}
